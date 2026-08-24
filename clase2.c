@@ -1,3 +1,6 @@
+// Aritmética de Apuntadores
+// Pase Por Referencia
+
 #include <stdio.h>
 #include <string.h>
 
