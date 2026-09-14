@@ -11,7 +11,7 @@ bool contains(char string[], char c)
 
 int main()
 {
-    bool (*ContainsFunc)(char[], char) = contains;
+    ContainsFunc cf1 = contains;
 
 
     return 0;

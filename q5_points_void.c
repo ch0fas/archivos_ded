@@ -21,7 +21,7 @@ int main()
     printf("%d\n", x);
 
     char s[] = "Hola";
-    array[4] = s;
-    printf("%s\n", array[4]);
+    array[3] = s;
+    printf("%s\n", array[3]);
     return 0;
 }
