@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-typedef void (*MathFunc)(int mat[][3], int);
+typedef void (*MathFunc)(int[][3], int);
 typedef void (*PrintFunc)(void*);
 
 void to_identity(int mat[][3], int rows)
