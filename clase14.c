@@ -18,9 +18,16 @@ int main()
     vec3_setX(v1, 3);
     printf("Cambiando x: %lf\n", vec3_getX(v1));
 
-
-    printf("Dot Product: %lf\n", vec3_point_product(v1, v2));
+    printf("Magnitud de v1: %.2lf\n", vec3_getMagnitude(v1));
+    printf("V1 normalizado:\n");
+    vec3_print(vec3_normalized(v1));
+    printf("Dot Product de v1 y v2: %lf\n", vec3_point_product(v1, v2));
+    Vec3 v3 = vec3_clone(v2);
+    printf("v1 == v2? %d\n", vec3_equals(v1, v2));
+    printf("v3 == v2? %d\n", vec3_equals(v3, v2));
 
     vec3_destroy(v1);
+    vec3_destroy(v2);
+    vec3_destroy(v3);
     return 0;
 }

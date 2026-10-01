@@ -3,6 +3,7 @@
 // Todo se define adentro de este "if"
 
 typedef struct strVec3* Vec3;
+typedef enum {False, True} Bool;
 
 Vec3 vec3_create(double x, double y, double z);
 void vec3_destroy(Vec3);
@@ -20,7 +21,7 @@ double vec3_getMagnitude(Vec3);
 Vec3 vec3_normalized(Vec3);
 double vec3_point_product(Vec3, Vec3);
 void vec3_print(Vec3);
-bool vec3_equals(Vec3, Vec3);
+Bool vec3_equals(Vec3, Vec3);
 Vec3 vec3_clone(Vec3);
 
 #endif

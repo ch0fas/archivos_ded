@@ -84,3 +84,16 @@ void vec3_print(Vec3 v)
     printf("=== Sobre el Vector ===\n");
     printf("(%.2lf, %.2lf, %.2lf)\n", v->x, v->y, v->z);
 }
+
+Bool vec3_equals(Vec3 v1, Vec3 v2)
+{
+    if (v1->x == v2->x && v1->y == v2->y && v1->z == v2->z)
+    {
+        return True;
+    } else return False;
+}
+
+Vec3 vec3_clone(Vec3 v)
+{
+    return vec3_create(v->x, v->y, v->z);
+}

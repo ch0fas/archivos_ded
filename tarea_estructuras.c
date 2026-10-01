@@ -72,6 +72,5 @@ int main()
 
     about_arr(heights_arr, (first_n + second_n));
 
-
     return 0;
 }
