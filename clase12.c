@@ -11,6 +11,7 @@ typedef struct
     int inventory;
     char name[30];
 } Product;
+
 void print_matrix(int** m, int r, int c)
 {
     int* ptr = *m;
