@@ -1,0 +1,6 @@
+Expediente	Nombre	Promedio	Semestre
+751299	Sofia	9.3	7
+751678	Vivi	9.6	7
+751001	Mariane	9.5	9
+760002	Connell	9.5	9
+748222	Elio	9.0	3
