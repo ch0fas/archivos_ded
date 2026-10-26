@@ -23,4 +23,7 @@ void list_add(List, Type);
 // Get element at a specific position
 Type list_get(List, int);
 
+// Remove element at a specific position
+Type list_remove(List, int);
+
 #endif

@@ -1,5 +1,4 @@
 #include "Queue.h"
-#include <stdio.h>
 #include <stdlib.h>
 
 struct strNode
