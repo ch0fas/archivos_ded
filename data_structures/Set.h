@@ -10,8 +10,15 @@ typedef struct strSet* Set;
 Set set_create(CompareFunc);
 
 // Get size of Set
-int get_size(Set);
+int set_size(Set);
 
 // Add element to Set
 Bool set_add(Set, Type);
+
+// Check if element is in Set
+Bool set_contains(Set, Type);
+
+// Eliminiates a Set from memory
+void set_destroy(Set s);
+
 #endif

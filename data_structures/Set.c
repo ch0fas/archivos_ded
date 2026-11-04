@@ -16,12 +16,13 @@ struct strSet
     CompareFunc cf;
 };
 
-int compareInts(Type t1, Type t2)
+Node create_node(Type data)
 {
-    int* i1 = (int*) t1;
-    int* i2 = (int*) t2;
+    Node n = (Node) malloc(sizeof(struct strNode));
+    n->left = n->right = NULL;
+    n->data = data;
 
-    return *i1 - *i2;
+    return n;
 }
 
 Set set_create(CompareFunc cf)
@@ -34,22 +35,67 @@ Set set_create(CompareFunc cf)
     return s;
 }
 
-int get_size(Set s)
+int set_size(Set s)
 {
     return s->size;
 }
 
 Bool set_add(Set s, Type data)
 {
-    if (s->size == 0)
+    Bool found = False;
+    Bool added = False;
+    if (s->root == NULL)
     {
-        Node tmp = (Node) malloc(sizeof(struct strNode));
-        tmp->data = data;
-        tmp->left = NULL;
-        tmp->right = NULL;
-        s->size++;
-        return True;
+        s->root = create_node(data);
+        added = True;
+    } else
+    {
+        Node curr = s->root;
+        while(!found )
+        {
+            int res = s->cf(data, curr->data);
+            if (res == 0) found = True;
+            else if (res < 0)
+            {
+                if (curr->left == NULL)
+                {
+                    curr->left = create_node(data);
+                    added = True;
+                } else
+                {
+                    curr = curr->left;
+                }
+
+            } else
+            {
+                if (curr->right == NULL)
+                {
+                    curr->right = create_node(data);
+                    added = True;
+                } else
+                {
+                    curr = curr->right;
+                }
+            }
+        }
     }
 
-    return NULL;
+    if (added)
+    {
+        s->size++;
+    }
+    return added;
+}
+
+Bool contains(Node n, Type data, CompareFunc cf)
+{
+    if (n == NULL) return False;
+    int res = cf(data, n->data);
+    if (res == 0) return True;
+    if (res < 0) return contains(n->left, data, cf);
+    return contains(n->right, data, cf);
+}
+Bool set_contains(Set s, Type data)
+{
+    return contains(s->root, data, s->cf);
 }
