@@ -3,7 +3,15 @@
 #include <stdlib.h>
 #include <string.h>
 #include "Chack.h"
+#include <stdint.h>
+#include "data_structures/Queue.h"
 #define ALPHABET 26
+
+typedef struct
+{
+    int id;
+    int steps;
+} Task;
 
 void create_matrix(char**** matrix, unsigned int** counts, char* words[], int N)
 {
@@ -40,6 +48,93 @@ void create_matrix(char**** matrix, unsigned int** counts, char* words[], int N)
     free(pos);
 }
 
+Bool isBalanced(char filename[])
+{
+    FILE* f1 = fopen(filename, "r");
+    if (!f1)
+    {
+        printf("File could not be opened");
+        return False;
+    } else
+    {
+        Chack k = chack_create(1024);
+        Bool balanced = True;
+        int c;
+
+        while (balanced && (c = fgetc(f1)) != EOF)
+        {
+            switch(c)
+            {
+                case '(': case '[': case '{': case '<':
+                    chack_push(k, (char)c);
+                    break;
+
+                case ')':
+                    if (chack_isEmpty(k) || chack_pop(k) != '(') balanced = False;
+                    break;
+                case ']':
+                    if (chack_isEmpty(k) || chack_pop(k) != '[') balanced = False;
+                    break;
+                case '}':
+                    if (chack_isEmpty(k) || chack_pop(k) != '{') balanced = False;
+                    break;
+                case '>':
+                    if (chack_isEmpty(k) || chack_pop(k) != '<') balanced = False;
+                    break;
+
+                default:
+                    break;
+            }
+        }
+
+        if (!chack_isEmpty(k)) balanced = False;
+
+        chack_destroy(k);
+        fclose(f1);
+        return balanced;
+    }
+}
+
+Queue createTaskQueue(char* filename)
+{
+    FILE* f1 = fopen(filename, "rb");
+    if (!f1) return NULL;
+
+    Queue q = queue_create();
+
+    uint16_t pair[2];
+
+    while (fread(pair, sizeof(uint16_t), 2, f1) == 2)
+    {
+        Task* tmp = (Task*) malloc(sizeof(Task));
+        tmp->id = pair[0];
+        tmp->steps = pair[1];
+        queue_offer(tmp, q);
+    }
+
+    fclose(f1);
+    return q;
+}
+
+void processTaskQueue(Queue q, char* log_file_name)
+{
+    FILE* log = fopen(log_file_name, "w");
+    if (!log) return;
+
+    int n = 1;
+    while(!queue_isEmpty(q))
+    {
+        Task* t = (Task*) queue_poll(q);
+        t->steps--;
+        fprintf(log, "%d) Active Task: %d, remaining steps: %d\n", n++, t->id, t->steps);
+
+        if (t->steps > 0) queue_offer(t, q);
+        else free(t);
+    }
+
+    fclose(log);
+}
+
 int main()
 {
     printf("=== RETO 1 ===\n");
@@ -69,4 +164,12 @@ int main()
     chack_print(k);
     chack_clear(k);
     chack_print(k);
+
+    printf("=== RETO 3 ===\n");
+    printf("%d\n", isBalanced("test_file.c"));
+
+    printf("=== RETO 4 ===\n");
+    Queue q = createTaskQueue("Tasks.dat");
+    int tasks = queue_size(q); printf("%d\n", tasks);
+    processTaskQueue(q, "log.txt");
 }

@@ -1,10 +1,11 @@
+#include "data_structures/common.h"
 #ifndef CHACK_H_
 #define CHACK_H_
 
 typedef struct strChack* Chack;
-typedef enum {False, True} Bool;
 
 Chack chack_create(int capacity);
+void chack_destroy(Chack);
 void chack_push(Chack, char);
 char chack_pop(Chack);
 char chack_top(Chack);

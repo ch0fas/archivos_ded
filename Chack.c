@@ -24,6 +24,13 @@ Chack chack_create(int capacity)
     return k;
 }
 
+void chack_destroy(Chack k)
+{
+    if (k == NULL) return;
+    free(k->data);
+    free(k);
+}
+
 void chack_push(Chack k, char data)
 {
     k->data[k->size] = data;
