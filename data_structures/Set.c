@@ -1,5 +1,7 @@
 #include "Set.h"
+#include "common.h"
 #include <stdlib.h>
+#include <stdio.h>
 
 struct strNode
 {
@@ -14,6 +16,8 @@ struct strSet
     Node root;
     size_t size;
     CompareFunc cf;
+    PrintFunc pf;
+    DestroyFunc df;
 };
 
 Node create_node(Type data)
@@ -25,12 +29,14 @@ Node create_node(Type data)
     return n;
 }
 
-Set set_create(CompareFunc cf)
+Set set_create(CompareFunc cf, PrintFunc pf, DestroyFunc df)
 {
     Set s = (Set) malloc(sizeof(struct strSet));
     s->root = NULL;
     s->size = 0;
     s->cf = cf;
+    s->pf = pf;
+    s->df = df;
 
     return s;
 }
@@ -98,4 +104,56 @@ Bool contains(Node n, Type data, CompareFunc cf)
 Bool set_contains(Set s, Type data)
 {
     return contains(s->root, data, s->cf);
+}
+
+void helper_print(Node n, PrintFunc pf)
+{
+    if (n == NULL) return;
+    helper_print(n->left, pf);
+    pf(n->data);
+    helper_print(n->right, pf);
+}
+
+void helper_2print(Node n, PrintFunc pf, int spaces, char c)
+{
+    if (n == NULL) return;
+    for (int i = 0; i < spaces; i++) printf(" ");
+    printf("(%d %c) ",spaces, c);
+    pf(n->data);
+    printf("\n");
+    helper_2print(n->left, pf, spaces + 1, 'L');
+    helper_2print(n->right, pf, spaces + 1, 'R');
+}
+
+void set_print(Set s)
+{
+    helper_print(s->root, s->pf);
+    printf("\n");
+    helper_2print(s->root, s->pf, 0, 'M');
+}
+
+void helper_destroy(Node n, DestroyFunc df)
+{
+    if (n == NULL) return;
+    helper_destroy(n->left, df);
+    helper_destroy(n->right, df);
+    if (df != NULL) df(n->data);
+    free(n);
+}
+
+void set_destroy(Set s)
+{
+    helper_destroy(s->root, s->df);
+    free(s);
+}
+
+Type set_min(Set s)
+{
+    if (s->root == NULL) return NULL;
+    Node n = s->root;
+    while(n->left != NULL)
+    {
+        n = n->left;
+    }
+    return n->data;
 }
