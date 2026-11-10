@@ -141,6 +141,7 @@ int main()
     char*** matrix = NULL;
     unsigned int* counts = NULL;
     char* words[] = {"int", "main", "double", "char", "else", "long", "case", "for", "while", "continue", "if", "float", "do", "break", "switch"};
+    char* words2[] = {"and", "await", "def", "from", "none", "return", "try", "true", "or", "not", "is", "lambda", "global", "except", "else"};
     int n = 15;
 
     create_matrix(&matrix, &counts, words, n);
@@ -155,6 +156,22 @@ int main()
         printf("\n");
     }
 
+    printf("\n\n");
+
+    char*** matrix2 = NULL; unsigned int* counts2 = NULL;
+    create_matrix(&matrix2, &counts2, words2, n);
+
+    for (int i = 0; i < ALPHABET; i++)
+    {
+        if (counts2[i] == 0) continue;
+        for (int j = 0; j < counts2[i]; j++)
+        {
+            printf("%s ", matrix2[i][j]);
+        }
+        printf("\n");
+    }
+
+
     printf("=== RETO 2 ===\n");
     Chack k = chack_create(10);
     chack_print(k);
@@ -165,8 +182,19 @@ int main()
     chack_clear(k);
     chack_print(k);
 
+    printf("\n\n");
+    Chack k2 = chack_create(5);
+    chack_print(k2);
+    for (char c = 'A'; c <= 'Z'; c++) chack_push(k2, c);
+    printf("Pop: %c\n", chack_pop(k2));
+    printf("Top: %c\n", chack_top(k2));
+    chack_print(k2);
+    chack_clear(k2);
+    chack_print(k2);
+
     printf("=== RETO 3 ===\n");
     printf("%d\n", isBalanced("test_file.c"));
+    printf("%d\n", isBalanced("test_file2.c"));
 
     printf("=== RETO 4 ===\n");
     Queue q = createTaskQueue("Tasks.dat");
