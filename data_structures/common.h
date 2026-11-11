@@ -5,5 +5,6 @@ typedef void* Type;
 typedef enum {False, True} Bool;
 typedef void(*PrintFunc)(Type);
 typedef void(*DestroyFunc)(Type);
+typedef int(*CompareFunc)(Type, Type);
 
 #endif

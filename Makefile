@@ -1,18 +1,18 @@
 CC = gcc
 CFLAGS = -Wall -Wextra -std=c11
 
-TARGET = build/clase25
+TARGET = build/clase26
 
-$(TARGET): build/clase25.o build/Set.o
+$(TARGET): build/clase26.o build/PriorityQueue.o
 	$(CC) $(CFLAGS) $^ -o $@
 
-build/clase25.o: clase25.c data_structures/Set.h
+build/clase26.o: clase26.c data_structures/PriorityQueue.h
 	mkdir -p build
-	$(CC) $(CFLAGS) -c clase25.c -o $@
+	$(CC) $(CFLAGS) -c clase26.c -o $@
 
-build/Set.o: data_structures/Set.c data_structures/Set.h
+build/PriorityQueue.o: data_structures/PriorityQueue.c data_structures/PriorityQueue.h
 	mkdir -p build
-	$(CC) $(CFLAGS) -c data_structures/Set.c -o $@
+	$(CC) $(CFLAGS) -c data_structures/PriorityQueue.c -o $@
 
 clean:
 	rm -rf build
