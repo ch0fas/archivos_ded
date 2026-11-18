@@ -24,6 +24,9 @@ size_t pqueue_size(PrioQueue);
 // Check if PriorityQueue is empty
 Bool pqueue_isEmpty(PrioQueue);
 
+// Print out the information from a PQueue
+void pqueue_print(PrioQueue, PrintFunc);
+
 // Destroy PriorityQueue
 void pqueue_destroy(PrioQueue);
 #endif
