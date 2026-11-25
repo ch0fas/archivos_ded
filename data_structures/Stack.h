@@ -13,7 +13,7 @@ void stack_destroy(Stack);
 // Add element to the stack
 void stack_push(Type, Stack); // Done
 Type stack_top(Stack); // Done
-void stack_pop(Stack); // Done
+Type stack_pop(Stack); // Done
 Bool stack_isEmpty(Stack); // Done
 int stack_size(Stack); // Done
 

@@ -57,15 +57,16 @@ Type stack_top(Stack st)
     else return st->top->data;
 }
 
-void stack_pop(Stack st)
+Type stack_pop(Stack st)
 {
-    if (stack_isEmpty(st)) return;
+    if (stack_isEmpty(st)) return NULL;
 
     Node temp = st->top;
     st->top = st->top->prior;
-
+    Node popped_data = temp->data;
     free(temp);
     st->size--;
+    return popped_data;
 }
 
 Bool stack_isEmpty(Stack st)
