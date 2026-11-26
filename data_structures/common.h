@@ -3,10 +3,8 @@
 
 typedef void* Type;
 typedef enum {False, True} Bool;
-typedef void(*PrintFunc)(Type);
-typedef void(*DestroyFunc)(Type);
-typedef int(*CompareFunc)(Type, Type);
-typedef Bool(*EqualsFunc)(Type, Type);
-typedef int (*HashFunc)(Type);
+typedef void (*DestroyFunc)(Type);
+typedef int  (*CompareFunc)(Type, Type);
+typedef void (*PrintFunc)(Type);
 
 #endif

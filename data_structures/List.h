@@ -1,29 +1,26 @@
-#include <stddef.h>
-
 #ifndef LIST_H_
 #define LIST_H_
 
-typedef void* Type;
-typedef enum {False, True} Bool;
+#include "common.h"
+#include <stdlib.h>
 
 typedef struct strList* List;
 
-// Creates an empty list
-List list_create();
-
-// Destroys a list
+List list_create(DestroyFunc);
+size_t list_size(List);
+void list_add(List, Type);
+Type list_get(List, int);
+Type list_remove(List l, int p);
 void list_destroy(List);
 
-// Get size of list
-size_t list_size(List);
+typedef struct strNode* Iterator;
 
-// Add new element to front of list
-void list_add(List, Type);
+Iterator list_begin(List);
+Bool list_hasNext(Iterator);
+Iterator list_next(Iterator);
+Type list_data(Iterator);
+Iterator list_insert(Iterator ite, Type data, List l);
+Iterator list_delete(Iterator ite, List l);
 
-// Get element at a specific position
-Type list_get(List, int);
 
-// Remove element at a specific position
-Type list_remove(List, int);
-
-#endif
+#endif /* LIST_H_ */
