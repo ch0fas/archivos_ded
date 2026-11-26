@@ -1,32 +1,18 @@
+#ifndef PRIORITYQUEUE_H_
+#define PRIORITYQUEUE_H_
+
 #include "common.h"
-#include <stdlib.h>
+#include <stdio.h>
 
-#ifndef PRIORITY_QUEUE_H_
-#define PRIORITY_QUEUE_H_
+typedef struct strPQueue* PQueue;
 
-typedef struct strPQueue* PrioQueue;
+PQueue pqueue_create(size_t, CompareFunc);
+size_t pqueue_size(PQueue);
+Bool pqueue_isEmpty(PQueue);
+void pqueue_offer(PQueue, Type);
+Type pqueue_peek(PQueue);
+Type pqueue_poll(PQueue);
+void pqueue_print(PQueue, PrintFunc);
+void pqueue_destroy(PQueue);
 
-// Creates an empty PriorityQueue
-PrioQueue pqueue_create(size_t, CompareFunc);
-
-// Adds element to PriorityQueue
-void pqueue_offer(PrioQueue, Type);
-
-// See top element of PriorityQueue
-Type pqueue_peek(PrioQueue);
-
-// Delete top element of PriorityQueue, and get it
-Type pqueue_poll(PrioQueue);
-
-// Check size of PriorityQueue
-size_t pqueue_size(PrioQueue);
-
-// Check if PriorityQueue is empty
-Bool pqueue_isEmpty(PrioQueue);
-
-// Print out the information from a PQueue
-void pqueue_print(PrioQueue, PrintFunc);
-
-// Destroy PriorityQueue
-void pqueue_destroy(PrioQueue);
-#endif
+#endif /* PRIORITYQUEUE_H_ */

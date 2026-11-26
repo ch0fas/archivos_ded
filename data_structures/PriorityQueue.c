@@ -1,124 +1,110 @@
-#include "common.h"
 #include "PriorityQueue.h"
 #include <stdlib.h>
-#include <stdio.h>
 
-struct strPQueue
-{
-    Type* heap;
-    size_t capacity;
-    size_t size;
-    CompareFunc cf;
+struct strPQueue {
+	Type* heap; // ¿Qué era esto?
+	size_t capacity;
+	size_t size;
+	CompareFunc compare;
 };
 
-PrioQueue pqueue_create(size_t capacity, CompareFunc cf)
-{
-    PrioQueue pq = (PrioQueue) malloc(sizeof(struct strPQueue));
-    pq->heap = (Type*) malloc(capacity * sizeof(Type));
-    pq->capacity = capacity;
-    pq->size = 0;
-    pq->cf = cf;
-
-    return pq;
+PQueue pqueue_create(size_t capacity, CompareFunc compare) {
+	//Creamos el blque de memoria
+    PQueue new = (PQueue) malloc(sizeof (struct strPQueue));
+	new->heap = (Type*) calloc(capacity,sizeof(Type)); //arreglo nulo? ,o que
+	//Mis compañeros me dijieron que un calloc profe
+	new->capacity=capacity;
+	new->size=0;
+	new->compare=compare;
+	return new;
 }
 
-int mom(int index) {return (index - 1) / 2;}
-
-int left(int index) { return 2 * index + 1; }
-int right(int index) { return 2 * index + 2; }
-
-void swap(Type* a, Type* b)
-{
-    Type tmp = *a;
-    *a = *b;
-    *b = tmp;
+Bool pqueue_isEmpty(PQueue pqueue){
+	return pqueue->size == 0;
 }
 
-void pqueue_offer(PrioQueue pq, Type data)
-{
-    // Caso: Hay capacidad en el arreglo, solo hay que agregar el valor
-    pq->heap[pq->size] = data;
-
-    int child = pq->size, parent = mom(child);
-    int res = -1;
-    while (res < 0 && child > 0)
-    {
-        res = pq->cf(pq->heap[child], pq->heap[parent]);
-        if (res < 0)
-        {
-            swap(&pq->heap[child], &pq->heap[parent]);
-            child = parent;
-            parent = mom(parent); // TO BE COMPLETED
-        }
-    }
-    pq->size++;
-    if (pq->size == pq->capacity)
-    {
-        NULL;
-    }
+size_t pqueue_size(PQueue pqueue) {
+	return pqueue->size;
 }
 
-Type pqueue_peek(PrioQueue pq)
-{
-    if (pqueue_isEmpty(pq)) return NULL;
-    return pq->heap[0];
+int parent(int index) {
+	return (index - 1) / 2;
 }
 
-size_t pqueue_size(PrioQueue pq)
-{
-    return pq->size;
+void suap(Type *a, Type *b) {
+	Type tmp = *a;
+	*a = *b;
+	*b = tmp;
 }
 
-Bool pqueue_isEmpty(PrioQueue pq)
-{
-    return pq->size == 0;
+void pqueue_offer(PQueue pqueue, Type data) {
+//	Hipótesis: hay capacidad en el arreglo (sólo falta apoyarlos)
+	pqueue->heap[pqueue->size] = data;
+	int c = pqueue->size, p = parent(c);
+	int res = -1;
+	while(c > 0 && res < 0) {
+		res = pqueue->compare(pqueue->heap[c], pqueue->heap[p]);
+		if(res < 0) {  //  El hijo es menor que el papá
+			suap(&pqueue->heap[c], &pqueue->heap[p]);
+			c = p;
+			p = parent(p);
+		}
+	}
+	pqueue->size ++;
 }
 
-void pqueue_print(PrioQueue pq, PrintFunc pf)
-{
-    for (int i = 0; i < pq->size; i++)
-    {
-        printf(",");
-        pf(pq->heap[i]);
-    }
-    printf("\n");
+Type pqueue_peek(PQueue pqueue) {
+	if(pqueue_isEmpty(pqueue)) return NULL;
+	return pqueue->heap[0];
 }
 
-void heapify(PrioQueue pq, int p)
-{
-    int l = left(p), r = right(p);
-    int m = p;
-    Type md = pq->heap[p];
-    if (l < pq->size)
-    {
-        Type ld = pq->heap[l];
-        int res = pq->cf(md, ld);
-        if (res > 0) m = l;
-    }
-
-    if (r < pq->size)
-    {
-        Type rd = pq->heap[r];
-        int res = pq->cf(pq->heap[m], rd);
-        if (res > 0) m = r;
-    }
-
-    if (m != p)
-    {
-        swap(&pq->heap[m], &pq->heap[p]);
-        heapify(pq, m);
-    }
-
-    Type ld = pq->heap[l];
-    Type rd = pq->heap[r];
+void pqueue_print(PQueue pqueue, PrintFunc print) {
+	for(int i = 0; i < pqueue->size; i ++) {
+		print(pqueue->heap[i]);
+		if(i < pqueue->size - 1) {
+			printf(", ");
+		}
+	}
+	printf("\n");
+	printf("Originario de la ciudad de Nueva York\n");
+	printf("Solo que sin construir\n");
 }
 
-Type pqueue_poll(PrioQueue pq)
-{
-    if (pqueue_isEmpty(pq)) return NULL;
-    Type min = pq->heap[0];
-    pq->size--;
-    pq->heap[0] = pq->heap[pq->size];
+int left(int index) {
+	return 2 * index + 1;
+}
 
+int right(int index) {
+	return 2 * index + 2;
+}
 
+void heapify(PQueue pqueue, int p) {
+	// Encontrar menor entre padre, izquierdo, derecho
+	int l = left(p), r = right(p);
+	int m = p;
+	Type pd = pqueue->heap[p];
+	if(l < pqueue->size) {
+		Type ld = pqueue->heap[l];
+		int res = pqueue->compare(pd, ld);
+		if(res > 0) m = l;
+	}
+	if(r < pqueue->size) {
+		Type rd = pqueue->heap[r];
+		int res = pqueue->compare(pqueue->heap[m] , rd);
+		if(res > 0) m = r;
+	}
+	// En este momento, m es la posición del menor de los 3
+	if(m != p) {
+		suap(&pqueue->heap[m], &pqueue->heap[p]);
+		heapify(pqueue, m);
+	}
+}
+
+Type pqueue_poll(PQueue pqueue) {
+	if(pqueue_isEmpty(pqueue)) return NULL;
+	Type min = pqueue->heap[0];
+	pqueue->size --;
+	pqueue->heap[0] = pqueue->heap[pqueue->size];
+	heapify(pqueue, 0);
+	return min;
 }
